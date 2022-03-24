@@ -5,6 +5,24 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('首页'),
+        leadingWidth: 0,
+      ),
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: ListView(
+          children: [
+            ListTile(
+              title: const Text('图书馆管理'),
+              onTap: () {
+                Navigator.of(context).pushNamed('/library');
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
