@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:kite_admin/component/scanner.dart';
 
-import 'feature/login/page/index.dart';
+import 'feature/index.dart';
 import 'util/logger.dart';
 
 final _routes = {
   '/scanner': (context) => const ScannerPage(),
+  '/home': (context) => const HomePage(),
+  '/login': (context) => const LoginPage(),
+  '/library': (context) => const LibraryPage(),
 };
 Route<dynamic> _onGenerateRoute(RouteSettings settings) {
   Log.info('跳转路由: ${settings.name}');

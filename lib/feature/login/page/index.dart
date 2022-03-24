@@ -15,13 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import 'package:flash/flash.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kite_admin/util/flash.dart';
 import 'package:kite_admin/util/url_launcher.dart';
-import 'package:kite_admin/util/validation.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -34,7 +32,6 @@ class _LoginPageState extends State<LoginPage> {
   // Text field controllers.
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _proxyInputController = TextEditingController();
 
   final GlobalKey _formKey = GlobalKey<FormState>();
 
@@ -43,7 +40,6 @@ class _LoginPageState extends State<LoginPage> {
   // State
   bool isPasswordClear = false;
   bool isLicenseAccepted = false;
-  bool isProxySettingShown = false;
   bool disableLoginButton = false;
 
   /// 用户点击登录按钮后
@@ -113,8 +109,7 @@ class _LoginPageState extends State<LoginPage> {
           TextFormField(
             controller: _usernameController,
             autofocus: true,
-            validator: studentIdValidator,
-            decoration: const InputDecoration(labelText: '学号', hintText: '输入你的学号', icon: Icon(Icons.person)),
+            decoration: const InputDecoration(labelText: '帐号', hintText: '输入你的学号', icon: Icon(Icons.person)),
           ),
           TextFormField(
             controller: _passwordController,
@@ -181,21 +176,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildProxySetButton(BuildContext context, FlashController<dynamic> controller, _) {
-    return IconButton(
-      onPressed: () {
-        final String inputText = _proxyInputController.text;
-
-        if (proxyValidator(inputText) != null) {
-          return;
-        }
-        controller.dismiss();
-        isProxySettingShown = false;
-      },
-      icon: const Icon(Icons.send),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -228,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: EdgeInsets.only(bottom: 20),
+              padding: const EdgeInsets.only(bottom: 20),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
