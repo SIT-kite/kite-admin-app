@@ -28,7 +28,7 @@ class KiteAdminApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget materialApp = MaterialApp(
       title: "KiteAdmin",
-      home: LoginPage(),
+      home: const LoginPage(),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: _onGenerateRoute,
       scrollBehavior: const MaterialScrollBehavior().copyWith(
