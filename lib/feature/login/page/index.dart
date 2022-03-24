@@ -97,7 +97,12 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget buildTitleLine() {
     return Container(
-        alignment: Alignment.centerLeft, child: Text('欢迎登录', style: Theme.of(context).textTheme.headline1));
+      alignment: Alignment.centerLeft,
+      child: Text(
+        '欢迎登录',
+        style: Theme.of(context).textTheme.headline4,
+      ),
+    );
   }
 
   Widget buildLoginForm() {
@@ -109,7 +114,11 @@ class _LoginPageState extends State<LoginPage> {
           TextFormField(
             controller: _usernameController,
             autofocus: true,
-            decoration: const InputDecoration(labelText: '帐号', hintText: '输入你的学号', icon: Icon(Icons.person)),
+            decoration: const InputDecoration(
+              labelText: '帐号',
+              hintText: '输入你的帐号',
+              icon: Icon(Icons.person),
+            ),
           ),
           TextFormField(
             controller: _passwordController,
@@ -169,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
           height: 40.h,
           child: ElevatedButton(
             onPressed: disableLoginButton ? null : onLogin,
-            child: const Text('进入风筝元宇宙'),
+            child: const Text('进入风筝后台'),
           ),
         ),
       ],
