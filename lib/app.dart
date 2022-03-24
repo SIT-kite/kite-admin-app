@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kite_admin/component/scanner.dart';
 
+import 'feature/login/page/index.dart';
 import 'util/logger.dart';
 
 final _routes = {
@@ -19,9 +20,9 @@ class KiteAdminApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Title",
-      home: Home(),
+    return const MaterialApp(
+      title: "KiteAdmin",
+      home: LoginPage(),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: _onGenerateRoute,
     );

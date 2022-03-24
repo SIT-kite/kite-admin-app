@@ -2,7 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:kite/util/range.dart';
+
+import 'range.dart';
 
 int randomInt(int start, int end) {
   return start + Random.secure().nextInt(end - start);

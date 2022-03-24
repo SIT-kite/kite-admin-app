@@ -19,13 +19,9 @@ import 'package:flash/flash.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kite/exception/session.dart';
-import 'package:kite/setting/init.dart';
-import 'package:kite/util/flash.dart';
-import 'package:kite/util/url_launcher.dart';
-import 'package:kite/util/validation.dart';
-
-import '../init.dart';
+import 'package:kite_admin/util/flash.dart';
+import 'package:kite_admin/util/url_launcher.dart';
+import 'package:kite_admin/util/validation.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -67,23 +63,21 @@ class _LoginPageState extends State<LoginPage> {
     final username = _usernameController.text;
     final password = _passwordController.text;
     try {
-      await LoginInitializer.ssoSession.login(username, password);
-      final personName = await LoginInitializer.authServerService.getPersonName();
-      SettingInitializer.auth
-        ..currentUsername = username
-        ..ssoPassword = password
-        ..personName = personName;
+      // TODO Login
+      // await LoginInitializer.ssoSession.login(username, password);
+      // final personName = await LoginInitializer.authServerService.getPersonName();
+      // SettingInitializer.auth
+      //   ..currentUsername = username
+      //   ..ssoPassword = password
+      //   ..personName = personName;
 
       Navigator.pushReplacementNamed(context, '/home');
       launchInBuiltinWebView(
         context,
         'https://cdn.kite.sunnysab.cn/wiki/kite-app/feature/',
       );
-    } on CredentialsInvalidException catch (e) {
-      showBasicFlash(context, Text(e.msg));
-      return;
     } catch (e) {
-      showBasicFlash(context, Text('未知错误: ' + e.toString()));
+      showBasicFlash(context, Text('错误: ' + e.toString()));
       return;
     } finally {
       setState(() {
@@ -96,12 +90,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
 
-    String? username = SettingInitializer.auth.currentUsername;
-    String? password = SettingInitializer.auth.ssoPassword;
-    if (username != null) {
-      _usernameController.text = username;
-      _passwordController.text = password ?? '';
-    }
+    _usernameController.text = '';
+    _passwordController.text = '';
   }
 
   static void onOpenUserLicense() {
@@ -201,44 +191,8 @@ class _LoginPageState extends State<LoginPage> {
         }
         controller.dismiss();
         isProxySettingShown = false;
-
-        SettingInitializer.network
-          ..useProxy = true
-          ..proxy = inputText;
-        // TODO
-        // SessionPool.init();
       },
       icon: const Icon(Icons.send),
-    );
-  }
-
-  void _showProxyInput() {
-    if (isProxySettingShown) {
-      return;
-    }
-    isProxySettingShown = true;
-    _proxyInputController.text = SettingInitializer.network.proxy;
-
-    context.showFlashBar(
-      persistent: true,
-      borderWidth: 3.sm,
-      behavior: FlashBehavior.fixed,
-      forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
-      title: const Text('设置代理服务'),
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('格式如 192.168.1.1:8000'),
-          Form(
-            child: TextFormField(
-              controller: _proxyInputController,
-              validator: proxyValidator,
-              autofocus: true,
-            ),
-          ),
-        ],
-      ),
-      primaryActionBuilder: _buildProxySetButton,
     );
   }
 
@@ -247,15 +201,6 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Stack(
         children: [
-          // Proxy setting
-          Positioned(
-            top: 40.h,
-            right: 10.w,
-            child: IconButton(
-              icon: Icon(Icons.settings, size: 35.sm),
-              onPressed: _showProxyInput,
-            ),
-          ),
           Center(
             child:
                 // Create new container and make it center in vertical direction.
