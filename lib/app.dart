@@ -12,6 +12,7 @@ final _routes = {
   '/login': (context) => const LoginPage(),
   '/library': (context) => const LibraryPage(),
   '/feedback': (context) => const FeedbackPage(),
+  '/about': (context) => const AboutPage(),
 };
 Route<dynamic> _onGenerateRoute(RouteSettings settings) {
   Log.info('跳转路由: ${settings.name}');
