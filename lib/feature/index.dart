@@ -1,3 +1,4 @@
+export 'about/page/index.dart';
 export 'feedback/page/index.dart';
 export 'home/page/index.dart';
 export 'library/page/index.dart';
