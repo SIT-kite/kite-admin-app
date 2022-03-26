@@ -61,7 +61,7 @@ class AppointmentService extends AService implements AppointmentDao {
 
   @override
   Future<List<PeriodStatusRecord>> getPeriodStatus(DateTime dateTime) async {
-    final response = await session.get('$_status/${dateTime.yyyyMMdd}/');
+    final response = await session.get('$_status/${DateFormat('yyyyMMdd').format(dateTime)}/');
     List raw = response.data;
     return raw.map((e) => PeriodStatusRecord.fromJson(e)).toList();
   }
