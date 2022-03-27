@@ -30,6 +30,9 @@ class QrResultPage extends StatelessWidget {
     final titleStyle = Theme.of(context).textTheme.headline3;
     final textStyle = Theme.of(context).textTheme.headline6;
 
+    TableRow row(String key, String value) =>
+        TableRow(children: [Text(key, style: textStyle), Text(value, style: textStyle)]);
+
     return Card(
       margin: const EdgeInsets.all(30),
       child: Center(
@@ -38,6 +41,16 @@ class QrResultPage extends StatelessWidget {
           children: [
             Text(data.application.user, style: titleStyle),
             const Divider(height: 5, thickness: 3, indent: 8, endIndent: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+              child: Table(
+                children: [
+                  row('预约ID', '${data.application.id}'),
+                  row('场次', '${data.application.period}'),
+                  row('序号', '${data.application.index}'),
+                ],
+              ),
+            ),
             Text('生成于 ${DateFormat('MM 月 dd 日 HH:mm:ss').format(data.timestamp.toLocal())}', style: textStyle),
           ],
         ),
