@@ -11,7 +11,7 @@ final _routes = {
   '/scanner': (context) => const ScannerPage(),
   '/home': (context) => const HomePage(),
   '/login': (context) => const LoginPage(),
-  '/library': (context) => const LibraryPage(),
+  '/library': (context) => LibraryPage(),
   '/feedback': (context) => const FeedbackPage(),
   '/about': (context) => const AboutPage(),
 };

@@ -4,24 +4,13 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 import '../entity.dart';
 
-class LibraryPage extends StatefulWidget {
-  const LibraryPage({Key? key}) : super(key: key);
-
-  @override
-  State<LibraryPage> createState() => _LibraryPageState();
-}
-
-class _LibraryPageState extends State<LibraryPage> {
+class LibraryPage extends StatelessWidget {
   final service = LibraryAppointmentInitializer.appointmentService;
 
-  ValueNotifier<List<ApplicationRecord>?> app = ValueNotifier(null);
-  ValueNotifier<DateTime> selectedDate = ValueNotifier(DateTime.now());
+  final ValueNotifier<List<ApplicationRecord>?> app = ValueNotifier(null);
+  final ValueNotifier<DateTime> selectedDate = ValueNotifier(DateTime.now());
 
-  @override
-  void initState() {
-    reloadApplicationList();
-    super.initState();
-  }
+  LibraryPage({Key? key}) : super(key: key);
 
   void reloadApplicationList() {
     service.getApplication(date: selectedDate.value).then((value) {
@@ -76,53 +65,70 @@ class _LibraryPageState extends State<LibraryPage> {
     );
   }
 
+  Widget buildBody(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            ValueListenableBuilder<DateTime>(
+                valueListenable: selectedDate,
+                builder: (context, value, child) {
+                  return Text(
+                    '${value.year} 年 ${value.month} 月 ${value.day} 日',
+                    style: Theme.of(context).textTheme.headline5,
+                  );
+                }),
+            TextButton(
+              child: const Text('切换日期'),
+              onPressed: () async {
+                final date = await showDatePicker(
+                  context: context,
+                  initialDate: selectedDate.value,
+                  currentDate: selectedDate.value,
+                  firstDate: DateTime(2022),
+                  lastDate: DateTime.now().add(const Duration(days: 1)),
+                  selectableDayPredicate: (date) => date.weekday != 1 && date.weekday != 2,
+                );
+
+                if (date != null) selectedDate.value = date;
+                app.value = null;
+                reloadApplicationList();
+              },
+            )
+          ],
+        ),
+        Expanded(
+          child: ValueListenableBuilder<List<ApplicationRecord>?>(
+            valueListenable: app,
+            builder: (BuildContext context, List<ApplicationRecord>? value, Widget? child) {
+              if (value == null) return const Center(child: CircularProgressIndicator());
+              return buildTable(value);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('图书馆预约')),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              ValueListenableBuilder<DateTime>(
-                  valueListenable: selectedDate,
-                  builder: (context, value, child) {
-                    return Text(
-                      '${value.year} 年 ${value.month} 月 ${value.day} 日',
-                      style: Theme.of(context).textTheme.headline5,
-                    );
-                  }),
-              TextButton(
-                child: const Text('切换日期'),
-                onPressed: () async {
-                  final date = await showDatePicker(
-                    context: context,
-                    initialDate: selectedDate.value,
-                    currentDate: selectedDate.value,
-                    firstDate: DateTime(2022),
-                    lastDate: DateTime.now().add(const Duration(days: 1)),
-                    selectableDayPredicate: (date) => date.weekday != 1 && date.weekday != 2,
-                  );
+    reloadApplicationList();
 
-                  if (date != null) selectedDate.value = date;
-                  app.value = null;
-                  reloadApplicationList();
-                },
-              )
-            ],
-          ),
-          Expanded(
-            child: ValueListenableBuilder<List<ApplicationRecord>?>(
-              valueListenable: app,
-              builder: (BuildContext context, List<ApplicationRecord>? value, Widget? child) {
-                if (value == null) return const Center(child: CircularProgressIndicator());
-                return buildTable(value);
-              },
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('图书馆预约'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh_outlined),
+            onPressed: () {
+              app.value = null;
+              reloadApplicationList();
+            },
           ),
         ],
       ),
+      body: buildBody(context),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.qr_code),
         onPressed: () async {
