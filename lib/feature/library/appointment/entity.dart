@@ -35,6 +35,7 @@ class ApplicationRecord {
   int period;
   String user;
   int index;
+  @JsonKey(defaultValue: '')
   String text;
   int status;
 
@@ -77,4 +78,15 @@ class CurrentPeriodResponse {
   String toString() {
     return 'CurrentPeriodResponse{after: $after, before: $before, period: $period, next: $next}';
   }
+}
+
+@JsonSerializable(createToJson: false)
+class QrCodeResponse {
+  ApplicationRecord application;
+  DateTime timestamp;
+  String sign;
+
+  QrCodeResponse(this.application, this.timestamp, this.sign);
+
+  factory QrCodeResponse.fromJson(Map<String, dynamic> json) => _$QrCodeResponseFromJson(json);
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kite_admin/feature/library/appointment/init.dart';
+import 'package:kite_admin/feature/library/appointment/page/result.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import '../entity.dart';
@@ -154,7 +155,9 @@ class LibraryPage extends StatelessWidget {
         child: const Icon(Icons.qr_code),
         onPressed: () async {
           final result = await Navigator.of(context).pushNamed('/scanner');
-          print('扫码结果: $result');
+          if (result != null) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => QrResultPage(result as String)));
+          }
         },
       ),
     );
