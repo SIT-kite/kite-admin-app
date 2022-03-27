@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:kite_admin/util/flash.dart';
 
 import '../entity.dart';
 import '../init.dart';
@@ -32,6 +33,14 @@ class QrResultPage extends StatelessWidget {
 
     TableRow row(String key, String value) =>
         TableRow(children: [Text(key, style: textStyle), Text(value, style: textStyle)]);
+
+    // 记录进馆
+    Future.delayed(Duration.zero, () async {
+      final service = LibraryAppointmentInitializer.appointmentService;
+      await service.updateApplication(data.application.id, 1);
+
+      showBasicFlash(context, Text('${data.application.user} 记录入馆'));
+    });
 
     return Card(
       margin: const EdgeInsets.all(30),
