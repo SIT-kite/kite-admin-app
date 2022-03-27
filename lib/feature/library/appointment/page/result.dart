@@ -66,7 +66,8 @@ class QrResultPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.qr_code),
         onPressed: () async {
-          final result = await Navigator.of(context).pushReplacementNamed('/scanner');
+          final result = await Navigator.of(context).pushNamed('/scanner');
+          Navigator.of(context).pop();
           if (result != null) {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => QrResultPage(result as String)));
           }
