@@ -96,30 +96,12 @@ class _ScannerPageState extends State<ScannerPage> with SingleTickerProviderStat
     );
   }
 
-  Widget buildCenterText() {
-    return Center(
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width - 200,
-        height: 50,
-        child: FittedBox(
-          child: Text(
-            barcode ?? 'Scan something!',
-            overflow: TextOverflow.fade,
-            style: Theme.of(context).textTheme.headline4!.copyWith(color: Colors.white),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget buildScanner() {
     return MobileScanner(
       controller: controller,
       fit: BoxFit.contain,
       onDetect: (barcode, args) {
-        setState(() {
-          this.barcode = barcode.rawValue;
-        });
+        controller.dispose();
         Navigator.pop(context, barcode.rawValue);
       },
     );

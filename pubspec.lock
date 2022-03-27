@@ -182,7 +182,7 @@ packages:
       name: ffi
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.2"
+    version: "1.2.0"
   file:
     dependency: transitive
     description:
@@ -352,6 +352,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.5"
+  linked_scroll_controller:
+    dependency: transitive
+    description:
+      name: linked_scroll_controller
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   lints:
     dependency: transitive
     description:
@@ -478,6 +485,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  pluto_grid:
+    dependency: "direct main"
+    description:
+      name: pluto_grid
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.9.3"
   pool:
     dependency: transitive
     description:
@@ -506,6 +520,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.27.3"
   shared_preferences:
     dependency: "direct main"
     description:
