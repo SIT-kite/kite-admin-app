@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../entity.dart';
 import '../init.dart';
@@ -12,34 +13,49 @@ class QrResultPage extends StatelessWidget {
   const QrResultPage(this.content, {Key? key}) : super(key: key);
 
   static bool verify(QrCodeResponse response) {
-    var clearText =
+    final clearText =
         '${response.application.period}|${response.application.user}|${response.application.index}|${response.application.id}|${response.timestamp.millisecondsSinceEpoch ~/ 1000}';
-    var sign = response.sign;
+    final sign = response.sign;
 
-    print(clearText);
-    print(sign);
-    print(LibraryAppointmentInitializer.publicKey.toFormattedPEM());
     return LibraryAppointmentInitializer.publicKey
         .verifySHA256Signature(utf8.encode(clearText) as Uint8List, base64Decode(sign));
   }
 
-  Widget buildDecryptionFailureView() {
-    return const Center(child: Text('无法识别的二维码', textAlign: TextAlign.center));
+  Widget buildDecryptionFailureView(BuildContext context, String message) {
+    final titleStyle = Theme.of(context).textTheme.headline3;
+    return Center(child: Text(message, textAlign: TextAlign.center, style: titleStyle));
+  }
+
+  Widget buildSuccessfulView(BuildContext context, QrCodeResponse data) {
+    final titleStyle = Theme.of(context).textTheme.headline3;
+    final textStyle = Theme.of(context).textTheme.headline6;
+
+    return Card(
+      margin: const EdgeInsets.all(30),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(data.application.user, style: titleStyle),
+            const Divider(height: 5, thickness: 3, indent: 8, endIndent: 8),
+            Text('生成于 ${DateFormat('MM 月 dd 日 HH:mm:ss').format(data.timestamp.toLocal())}', style: textStyle),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget buildBody(BuildContext context) {
     final data = QrCodeResponse.fromJson(jsonDecode(content));
 
-    if (!verify(data)) {
-      return buildDecryptionFailureView();
+    try {
+      if (!verify(data)) {
+        return buildDecryptionFailureView(context, '签名校验失败');
+      }
+    } catch (e) {
+      return buildDecryptionFailureView(context, '无法识别的二维码');
     }
-
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [Text(data.application.user)],
-      ),
-    );
+    return buildSuccessfulView(context, data);
   }
 
   @override
