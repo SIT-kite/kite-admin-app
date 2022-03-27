@@ -30,12 +30,16 @@ class PeriodStatusRecord {
   /// 场次描述
   String text;
 
-  PeriodStatusRecord(this.period, this.count, this.applied, this.text);
+  /// 是否已预约
+  bool appointed;
+
+  PeriodStatusRecord(this.period, this.count, this.applied, this.text, this.appointed);
+
   factory PeriodStatusRecord.fromJson(Map<String, dynamic> json) => _$PeriodStatusRecordFromJson(json);
 
   @override
   String toString() {
-    return 'PeriodStatusRecord{period: $period, count: $count, applied: $applied, text: $text}';
+    return 'PeriodStatusRecord{period: $period, count: $count, applied: $applied, text: $text, appointed: $appointed}';
   }
 }
 
@@ -74,9 +78,10 @@ class ApplyResponse {
 
 @JsonSerializable(createToJson: false)
 class CurrentPeriodResponse {
-  DateTime after;
-  DateTime before;
-  int period;
+  DateTime? after;
+  DateTime? before;
+  int? period;
+  int? next;
 
   CurrentPeriodResponse(this.after, this.before, this.period);
 
@@ -84,6 +89,6 @@ class CurrentPeriodResponse {
 
   @override
   String toString() {
-    return 'CurrentPeriodResponse{after: $after, before: $before, period: $period}';
+    return 'CurrentPeriodResponse{after: $after, before: $before, period: $period, next: $next}';
   }
 }
