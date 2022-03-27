@@ -28,25 +28,29 @@ class LibraryPage extends StatelessWidget {
         width: 80,
         title: '场次',
         field: 'period',
-        type: PlutoColumnType.select(['上午', '下午', '晚上'], enableColumnFilter: true),
+        type: PlutoColumnType.select(['上午', '下午', '晚上']),
+        readOnly: true,
       ),
       PlutoColumn(
         width: 120,
         title: '学号',
         field: 'studentId',
         type: PlutoColumnType.text(),
+        readOnly: true,
       ),
       PlutoColumn(
         width: 80,
         title: '状态',
         field: 'status',
         type: PlutoColumnType.text(),
+        readOnly: true,
       ),
       PlutoColumn(
         width: 80,
         title: '序号',
         field: 'index',
         type: PlutoColumnType.text(),
+        readOnly: true,
       ),
     ];
 
@@ -62,6 +66,23 @@ class LibraryPage extends StatelessWidget {
     return PlutoGrid(
       columns: columns,
       rows: rows,
+      onLoaded: (PlutoGridOnLoadedEvent event) {
+        event.stateManager.setShowColumnFilter(true);
+      },
+      configuration: PlutoGridConfiguration(
+        /// If columnFilterConfig is not set, the default setting is applied.
+        ///
+        /// Return the value returned by resolveDefaultColumnFilter through the resolver function.
+        /// Prevents errors returning filters that are not in the filters list.
+        columnFilterConfig: PlutoGridColumnFilterConfig(
+          filters: const [
+            ...FilterHelper.defaultFilters,
+          ],
+          resolveDefaultColumnFilter: (column, resolver) {
+            return resolver<PlutoFilterTypeContains>() as PlutoFilterType;
+          },
+        ),
+      ),
     );
   }
 
