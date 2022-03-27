@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -19,6 +20,11 @@ class _ScannerPageState extends State<ScannerPage> with SingleTickerProviderStat
   );
 
   bool isStarted = true;
+
+  void play() async {
+    AudioCache player = AudioCache();
+    await player.play('beep.mp3');
+  }
 
   Widget buildImagePicker() {
     return IconButton(
@@ -102,6 +108,8 @@ class _ScannerPageState extends State<ScannerPage> with SingleTickerProviderStat
       fit: BoxFit.contain,
       onDetect: (barcode, args) {
         controller.dispose();
+
+        Future.delayed(Duration.zero, play);
         Navigator.pop(context, barcode.rawValue);
       },
     );
@@ -116,11 +124,11 @@ class _ScannerPageState extends State<ScannerPage> with SingleTickerProviderStat
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          buildTorchButton(),
+          // buildTorchButton(),
           // buildStopButton(),
           // buildCenterText(),
           buildSwitchButton(),
-          buildImagePicker(),
+          // buildImagePicker(),
         ],
       ),
     );
