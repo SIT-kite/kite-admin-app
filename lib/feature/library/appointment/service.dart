@@ -7,7 +7,6 @@ import 'package:kite_admin/feature/library/appointment/entity.dart';
 class AppointmentService extends AService implements AppointmentDao {
   static const _library = '/library';
   static const _application = '$_library/application';
-  static const _notice = '$_library/notice';
   static const _status = '$_library/status';
 
   AppointmentService(ASession session) : super(session);
@@ -51,12 +50,6 @@ class AppointmentService extends AService implements AppointmentDao {
   Future<String> getApplicationCode(int applyId) async {
     final response = await session.get('$_application/$applyId/code');
     return response.data;
-  }
-
-  @override
-  Future<Notice> getNotice() async {
-    final response = await session.get(_notice);
-    return Notice.fromJson(response.data);
   }
 
   @override

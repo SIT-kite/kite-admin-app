@@ -3,20 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 part 'entity.g.dart';
 
 @JsonSerializable(createToJson: false)
-class Notice {
-  DateTime ts;
-  String html;
-
-  Notice(this.ts, this.html);
-  factory Notice.fromJson(Map<String, dynamic> json) => _$NoticeFromJson(json);
-
-  @override
-  String toString() {
-    return 'Notice{ts: $ts, html: $html}';
-  }
-}
-
-@JsonSerializable(createToJson: false)
 class PeriodStatusRecord {
   /// 场次id
   int period;
