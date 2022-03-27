@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'feature/index.dart';
+import 'storage/init.dart';
 import 'util/logger.dart';
 
 final _routes = {
@@ -27,9 +28,10 @@ class KiteAdminApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool hasLogin = Storage.jwt.jwtToken != null;
     Widget materialApp = MaterialApp(
       title: "KiteAdmin",
-      home: const HomePage(),
+      home: hasLogin ? const HomePage() : const LoginPage(),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: _onGenerateRoute,
       scrollBehavior: const MaterialScrollBehavior().copyWith(

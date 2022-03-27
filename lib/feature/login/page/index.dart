@@ -18,6 +18,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kite_admin/global.dart';
 import 'package:kite_admin/util/flash.dart';
 import 'package:kite_admin/util/url_launcher.dart';
 
@@ -59,19 +60,8 @@ class _LoginPageState extends State<LoginPage> {
     final username = _usernameController.text;
     final password = _passwordController.text;
     try {
-      // TODO Login
-      // await LoginInitializer.ssoSession.login(username, password);
-      // final personName = await LoginInitializer.authServerService.getPersonName();
-      // SettingInitializer.auth
-      //   ..currentUsername = username
-      //   ..ssoPassword = password
-      //   ..personName = personName;
-
+      await Global.kiteSession.login(username, password);
       Navigator.pushReplacementNamed(context, '/home');
-      launchInBuiltinWebView(
-        context,
-        'https://cdn.kite.sunnysab.cn/wiki/kite-app/feature/',
-      );
     } catch (e) {
       showBasicFlash(context, Text('错误: ' + e.toString()));
       return;

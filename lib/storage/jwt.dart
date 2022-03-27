@@ -12,6 +12,7 @@ class JwtStorage implements JwtDao {
     return _preferences.getString(ns);
   }
 
+  @override
   set jwtToken(String? val) {
     if (val == null) {
       _preferences.remove(ns);
