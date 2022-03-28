@@ -107,10 +107,9 @@ class LibraryPage extends StatelessWidget {
                 final date = await showDatePicker(
                   context: context,
                   initialDate: selectedDate.value,
-                  currentDate: selectedDate.value,
+                  currentDate: DateTime.now(),
                   firstDate: DateTime(2022),
                   lastDate: DateTime.now().add(const Duration(days: 1)),
-                  selectableDayPredicate: (date) => date.weekday != 1 && date.weekday != 2,
                 );
 
                 if (date != null) selectedDate.value = date;
