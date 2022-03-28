@@ -28,8 +28,8 @@ class HomePage extends StatelessWidget {
         child: ListView(
           children: [
             buildMainMenu('图书馆预约管理', '/library'),
-            buildMainMenu('反馈', '/feedback'),
-            buildMainMenu('关于', '/about'),
+            // buildMainMenu('反馈', '/feedback'),
+            // buildMainMenu('关于', '/about'),
           ],
         ),
       ),
