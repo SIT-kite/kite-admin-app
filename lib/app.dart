@@ -24,8 +24,8 @@ Route<dynamic> _onGenerateRoute(RouteSettings settings) {
 }
 
 class KiteAdminApp extends StatelessWidget {
-  const KiteAdminApp({Key? key}) : super(key: key);
-
+  KiteAdminApp({Key? key}) : super(key: key);
+  final GlobalKey<NavigatorState> globalKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     bool hasLogin = Storage.jwt.jwtToken != null;
@@ -34,6 +34,7 @@ class KiteAdminApp extends StatelessWidget {
       home: hasLogin ? const HomePage() : const LoginPage(),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: _onGenerateRoute,
+      navigatorKey: globalKey,
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         dragDevices: {
           PointerDeviceKind.mouse,
@@ -54,7 +55,7 @@ class KiteAdminApp extends StatelessWidget {
     final withKeyboardListener = KeyboardListener(
       onKeyEvent: (event) {
         if (event is KeyUpEvent && LogicalKeyboardKey.escape == event.logicalKey) {
-          Navigator.pop(context);
+          Navigator.pop(globalKey.currentContext!);
         }
       },
       focusNode: FocusNode(),
