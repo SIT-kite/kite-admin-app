@@ -34,17 +34,18 @@ class ApplicationRecord {
   int id;
   int period;
   String user;
+  String name;
   int index;
   @JsonKey(defaultValue: '')
   String text;
   int status;
 
-  ApplicationRecord(this.id, this.period, this.user, this.index, this.text, this.status);
+  ApplicationRecord(this.id, this.period, this.user, this.name, this.index, this.text, this.status);
   factory ApplicationRecord.fromJson(Map<String, dynamic> json) => _$ApplicationRecordFromJson(json);
 
   @override
   String toString() {
-    return 'ApplicationRecord{id: $id, period: $period, user: $user, index: $index, text: $text, status: $status}';
+    return 'ApplicationRecord{id: $id, period: $period, user: $user, name: $name, index: $index, text: $text, status: $status}';
   }
 }
 

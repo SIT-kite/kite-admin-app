@@ -38,6 +38,13 @@ class LibraryPage extends StatelessWidget {
       ),
       PlutoColumn(
         width: 120,
+        title: '姓名',
+        field: 'name',
+        type: PlutoColumnType.text(),
+        readOnly: true,
+      ),
+      PlutoColumn(
+        width: 120,
         title: '学号',
         field: 'studentId',
         type: PlutoColumnType.text(),
@@ -62,6 +69,7 @@ class LibraryPage extends StatelessWidget {
     List<PlutoRow> rows = applications.map((e) {
       return PlutoRow(cells: {
         'period': PlutoCell(value: periodToString(e.period % 10)),
+        'name': PlutoCell(value: e.name),
         'studentId': PlutoCell(value: e.user),
         'status': PlutoCell(value: e.status == 1 ? '已入馆' : '未入馆'),
         'index': PlutoCell(value: '${e.index} (${e.text})')
@@ -159,10 +167,10 @@ class LibraryPage extends StatelessWidget {
                   '/${selectedDate.value.month}月${selectedDate.value.day}日导出数据.csv';
 
               final file = File(path);
-              String content = '申请ID,场次,学号,序号,状态\n';
+              String content = '申请ID,场次,学号,姓名,序号,状态\n';
               for (final e in applicationList!) {
                 content +=
-                    '${e.id},${periodToString(e.period % 10)},${e.user},${e.index},${e.status == 1 ? "已入馆" : "未入馆"}\n';
+                    '${e.id},${periodToString(e.period % 10)},${e.user},${e.name},${e.index},${e.status == 1 ? "已入馆" : "未入馆"}\n';
               }
               file.writeAsString(content);
               OpenFile.open(path, type: 'text/csv');
