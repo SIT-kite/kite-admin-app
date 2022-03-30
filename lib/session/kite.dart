@@ -84,6 +84,7 @@ class KiteSession extends ASession {
     final response = await post('/session', data: {
       'account': username,
       'password': password,
+      'mode': 1,
     });
     jwtDao.jwtToken = response.data['token'];
   }
