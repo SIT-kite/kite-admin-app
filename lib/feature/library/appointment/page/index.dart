@@ -64,6 +64,13 @@ class LibraryPage extends StatelessWidget {
         width: 80,
         title: '序号',
         field: 'index',
+        type: PlutoColumnType.number(),
+        readOnly: true,
+      ),
+      PlutoColumn(
+        width: 80,
+        title: '房间',
+        field: 'room',
         type: PlutoColumnType.text(),
         readOnly: true,
       ),
@@ -76,7 +83,8 @@ class LibraryPage extends StatelessWidget {
           'name': PlutoCell(value: e.name),
           'studentId': PlutoCell(value: e.user),
           'status': PlutoCell(value: e.status == 1 ? '已入馆' : '未入馆'),
-          'index': PlutoCell(value: '${e.index} (${e.text})')
+          'index': PlutoCell(value: e.index),
+          'room': PlutoCell(value: e.text),
         },
       );
     }).toList();
@@ -155,10 +163,15 @@ class LibraryPage extends StatelessWidget {
         (await getTemporaryDirectory()).path + '/${selectedDate.value.month}月${selectedDate.value.day}日导出数据.csv';
 
     final file = File(path);
-    String content = '申请ID,场次,学号,姓名,序号,状态\n';
+    String content = '申请ID,场次,学号,姓名,序号,房间,状态\n';
     for (final e in applicationList!) {
-      content +=
-          '${e.id},${periodToString(e.period % 10)},${e.user},${e.name},${e.index},${e.status == 1 ? "已入馆" : "未入馆"}\n';
+      content += '${e.id},'
+          '${periodToString(e.period % 10)},'
+          '${e.user},'
+          '${e.name},'
+          '${e.index},'
+          '${e.text},'
+          '${e.status == 1 ? "已入馆" : "未入馆"}\n';
     }
     file.writeAsString(content);
     OpenFile.open(path, type: 'text/csv');
@@ -166,10 +179,15 @@ class LibraryPage extends StatelessWidget {
 
   void exportFileOnWeb() async {
     final applicationList = app.value;
-    String content = '申请ID,场次,学号,姓名,序号,状态\n';
+    String content = '申请ID,场次,学号,姓名,序号,房间,状态\n';
     for (final e in applicationList!) {
-      content +=
-          '${e.id},${periodToString(e.period % 10)},${e.user},${e.name},${e.index},${e.status == 1 ? "已入馆" : "未入馆"}\n';
+      content += '${e.id},'
+          '${periodToString(e.period % 10)},'
+          '${e.user},'
+          '${e.name},'
+          '${e.index},'
+          '${e.text},'
+          '${e.status == 1 ? "已入馆" : "未入馆"}\n';
     }
     String name = '${selectedDate.value.month}月${selectedDate.value.day}日导出数据.csv';
 
