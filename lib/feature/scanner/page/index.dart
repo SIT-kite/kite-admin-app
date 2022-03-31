@@ -17,7 +17,6 @@ class _ScannerPageState extends State<ScannerPage> with SingleTickerProviderStat
 
   MobileScannerController controller = MobileScannerController(
     torchEnabled: false,
-    formats: [BarcodeFormat.qrCode],
     facing: facing,
   );
 
