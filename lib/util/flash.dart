@@ -15,29 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 
-void showBasicFlash(
+Future<void> showBasicFlash(
   BuildContext context,
   Widget content, {
   Duration? duration,
-  flashStyle = FlashBehavior.floating,
-}) {
-  showFlash(
-    context: context,
-    duration: duration ?? const Duration(seconds: 1),
-    builder: (context, controller) {
-      return Flash(
-        controller: controller,
-        behavior: flashStyle,
-        position: FlashPosition.bottom,
-        boxShadows: kElevationToShadow[4],
-        horizontalDismissDirection: HorizontalDismissDirection.horizontal,
-        child: FlashBar(
-          content: content,
-        ),
-      );
-    },
+}) async {
+  final snackBar = SnackBar(
+    content: DefaultTextStyle(
+      child: content,
+      style: const TextStyle(color: Colors.black),
+    ),
+    shape: Border.all(color: Colors.grey),
+    backgroundColor: Colors.white,
+    duration: duration ?? const Duration(seconds: 3),
   );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

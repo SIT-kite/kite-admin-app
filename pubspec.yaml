@@ -8,7 +8,6 @@ environment:
 
 dependencies:
   dio: ^4.0.4
-  flash: ^2.0.3+2
   flutter:
     sdk: flutter
   flutter_screenutil: ^5.3.1
