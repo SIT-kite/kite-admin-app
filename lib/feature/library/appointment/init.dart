@@ -9,6 +9,7 @@ class LibraryAppointmentInitializer {
   static late KiteSession kiteSession;
   static late AppointmentDao appointmentService;
   static late RSAPublicKey publicKey;
+  static late int currentPeriod;
 
   static void init({
     required KiteSession kiteSession,
@@ -19,6 +20,9 @@ class LibraryAppointmentInitializer {
     Future.delayed(Duration.zero, () async {
       final pem = (await Global.dio.get('https://kite.sunnysab.cn/api/v2/library/publicKey')).data as String;
       publicKey = RSAPublicKey.fromPEM(pem);
+
+      final current = await appointmentService.getCurrentPeriod();
+      currentPeriod = current!.period!;
     });
   }
 }

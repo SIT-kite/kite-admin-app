@@ -31,8 +31,8 @@ class QrResultPage extends StatelessWidget {
     final titleStyle = Theme.of(context).textTheme.headline3;
     final textStyle = Theme.of(context).textTheme.headline6;
 
-    TableRow row(String key, String value) =>
-        TableRow(children: [Text(key, style: textStyle), Text(value, style: textStyle)]);
+    TableRow row(String key, String value, {Color? color}) =>
+        TableRow(children: [Text(key, style: textStyle), Text(value, style: textStyle?.copyWith(color: color))]);
 
     // 记录进馆
     Future.delayed(Duration.zero, () async {
@@ -55,7 +55,9 @@ class QrResultPage extends StatelessWidget {
               child: Table(
                 children: [
                   row('预约ID', '${data.application.id}'),
-                  row('场次', '${data.application.period}'),
+                  row('场次', '${data.application.period}',
+                      color:
+                          data.application.period != LibraryAppointmentInitializer.currentPeriod ? Colors.red : null),
                   row('序号', '${data.application.index}'),
                 ],
               ),
