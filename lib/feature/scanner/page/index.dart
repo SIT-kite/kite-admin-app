@@ -3,6 +3,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kite_admin/global.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+var facing = CameraFacing.back;
+
 class ScannerPage extends StatefulWidget {
   const ScannerPage({Key? key}) : super(key: key);
 
@@ -16,7 +18,7 @@ class _ScannerPageState extends State<ScannerPage> with SingleTickerProviderStat
   MobileScannerController controller = MobileScannerController(
     torchEnabled: false,
     formats: [BarcodeFormat.qrCode],
-    facing: CameraFacing.back,
+    facing: facing,
   );
 
   bool isStarted = true;
@@ -57,7 +59,8 @@ class _ScannerPageState extends State<ScannerPage> with SingleTickerProviderStat
       icon: ValueListenableBuilder(
         valueListenable: controller.cameraFacingState,
         builder: (context, state, child) {
-          switch (state as CameraFacing) {
+          facing = state as CameraFacing;
+          switch (facing) {
             case CameraFacing.front:
               return const Icon(Icons.camera_front);
             case CameraFacing.back:
