@@ -71,15 +71,10 @@ class QrResultPage extends StatelessWidget {
     );
   }
 
-  Future<void> play() async {
-    Log.info('报警声');
-    await Global.player.play('beep.mp3');
-  }
-
   Future<void> beep() async {
-    await play();
-    await Future.delayed(Duration(milliseconds: 200));
-    await play();
+    await Future.delayed(const Duration(milliseconds: 200));
+    Log.info('报警声');
+    await Global.player.play('warn.wav');
   }
 
   Widget buildBody(BuildContext context) {
@@ -87,9 +82,11 @@ class QrResultPage extends StatelessWidget {
 
     try {
       if (!verify(data)) {
+        beep();
         return buildDecryptionFailureView(context, '签名校验失败');
       }
     } catch (e) {
+      beep();
       return buildDecryptionFailureView(context, '无法识别的二维码');
     }
 
@@ -102,7 +99,7 @@ class QrResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2, milliseconds: 500), () {
       Navigator.of(context).pop();
     });
     return Scaffold(
