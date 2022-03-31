@@ -42,3 +42,8 @@ flutter:
 
   assets:
     - assets/
+
+flutter_native_splash:
+  fullscreen: true
+  color: '#FFFFFF'
+  image: assets/icon.png
