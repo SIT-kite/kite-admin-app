@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:dio/dio.dart';
 import 'package:kite_admin/session/kite.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +9,7 @@ import 'storage/init.dart';
 class Global {
   static late SharedPreferences sharedPreferences;
   static late KiteSession kiteSession;
+  static late AudioCache player;
   static Dio dio = Dio();
 
   static Future<void> init() async {
@@ -15,5 +17,6 @@ class Global {
     Storage.init(sharedPreferences);
     kiteSession = KiteSession(dio, Storage.jwt);
     LibraryAppointmentInitializer.init(kiteSession: kiteSession);
+    player = AudioCache();
   }
 }

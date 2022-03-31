@@ -1,6 +1,6 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kite_admin/global.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class ScannerPage extends StatefulWidget {
@@ -22,8 +22,7 @@ class _ScannerPageState extends State<ScannerPage> with SingleTickerProviderStat
   bool isStarted = true;
 
   void play() async {
-    AudioCache player = AudioCache();
-    await player.play('beep.mp3');
+    await Global.player.play('beep.mp3');
   }
 
   Widget buildImagePicker() {

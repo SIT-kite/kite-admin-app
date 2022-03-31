@@ -182,9 +182,13 @@ class LibraryPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.qr_code),
         onPressed: () async {
-          final result = await Navigator.of(context).pushNamed('/scanner');
-          if (result != null) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => QrResultPage(result as String)));
+          while (true) {
+            final result = await Navigator.of(context).pushNamed('/scanner');
+            if (result != null) {
+              await Navigator.of(context).push(MaterialPageRoute(builder: (context) => QrResultPage(result as String)));
+            } else {
+              break;
+            }
           }
         },
       ),

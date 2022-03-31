@@ -3,7 +3,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:kite_admin/global.dart';
 import 'package:kite_admin/util/flash.dart';
+import 'package:kite_admin/util/logger.dart';
 
 import '../entity.dart';
 import '../init.dart';
@@ -69,6 +71,17 @@ class QrResultPage extends StatelessWidget {
     );
   }
 
+  Future<void> play() async {
+    Log.info('报警声');
+    await Global.player.play('beep.mp3');
+  }
+
+  Future<void> beep() async {
+    await play();
+    await Future.delayed(Duration(milliseconds: 200));
+    await play();
+  }
+
   Widget buildBody(BuildContext context) {
     final data = QrCodeResponse.fromJson(jsonDecode(content));
 
@@ -79,11 +92,19 @@ class QrResultPage extends StatelessWidget {
     } catch (e) {
       return buildDecryptionFailureView(context, '无法识别的二维码');
     }
+
+    bool notVerified = data.application.period != LibraryAppointmentInitializer.currentPeriod;
+    if (notVerified) {
+      beep();
+    }
     return buildSuccessfulView(context, data);
   }
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.of(context).pop();
+    });
     return Scaffold(
       appBar: AppBar(title: const Text('扫描结果')),
       body: buildBody(context),
