@@ -1,11 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:kite_admin/feature/library/appointment/init.dart';
 import 'package:kite_admin/feature/library/appointment/page/result.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 import '../entity.dart';
 
@@ -67,13 +70,15 @@ class LibraryPage extends StatelessWidget {
     ];
 
     List<PlutoRow> rows = applications.map((e) {
-      return PlutoRow(cells: {
-        'period': PlutoCell(value: periodToString(e.period % 10)),
-        'name': PlutoCell(value: e.name),
-        'studentId': PlutoCell(value: e.user),
-        'status': PlutoCell(value: e.status == 1 ? '已入馆' : '未入馆'),
-        'index': PlutoCell(value: '${e.index} (${e.text})')
-      });
+      return PlutoRow(
+        cells: {
+          'period': PlutoCell(value: periodToString(e.period % 10)),
+          'name': PlutoCell(value: e.name),
+          'studentId': PlutoCell(value: e.user),
+          'status': PlutoCell(value: e.status == 1 ? '已入馆' : '未入馆'),
+          'index': PlutoCell(value: '${e.index} (${e.text})')
+        },
+      );
     }).toList();
 
     return PlutoGrid(
@@ -144,6 +149,38 @@ class LibraryPage extends StatelessWidget {
     );
   }
 
+  Future<void> exportFile() async {
+    final applicationList = app.value;
+    final path =
+        (await getTemporaryDirectory()).path + '/${selectedDate.value.month}月${selectedDate.value.day}日导出数据.csv';
+
+    final file = File(path);
+    String content = '申请ID,场次,学号,姓名,序号,状态\n';
+    for (final e in applicationList!) {
+      content +=
+          '${e.id},${periodToString(e.period % 10)},${e.user},${e.name},${e.index},${e.status == 1 ? "已入馆" : "未入馆"}\n';
+    }
+    file.writeAsString(content);
+    OpenFile.open(path, type: 'text/csv');
+  }
+
+  void exportFileOnWeb() async {
+    final applicationList = app.value;
+    String content = '申请ID,场次,学号,姓名,序号,状态\n';
+    for (final e in applicationList!) {
+      content +=
+          '${e.id},${periodToString(e.period % 10)},${e.user},${e.name},${e.index},${e.status == 1 ? "已入馆" : "未入馆"}\n';
+    }
+    String name = '${selectedDate.value.month}月${selectedDate.value.day}日导出数据.csv';
+
+    await FileSaver.instance.saveFile(
+      name,
+      const Utf8Encoder().convert(content),
+      'csv',
+      mimeType: MimeType.CSV,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     reloadApplicationList();
@@ -162,18 +199,11 @@ class LibraryPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.download_outlined),
             onPressed: () async {
-              final applicationList = app.value;
-              final path = (await getTemporaryDirectory()).path +
-                  '/${selectedDate.value.month}月${selectedDate.value.day}日导出数据.csv';
-
-              final file = File(path);
-              String content = '申请ID,场次,学号,姓名,序号,状态\n';
-              for (final e in applicationList!) {
-                content +=
-                    '${e.id},${periodToString(e.period % 10)},${e.user},${e.name},${e.index},${e.status == 1 ? "已入馆" : "未入馆"}\n';
+              if (UniversalPlatform.isWeb) {
+                exportFileOnWeb();
+              } else {
+                exportFile();
               }
-              file.writeAsString(content);
-              OpenFile.open(path, type: 'text/csv');
             },
           ),
         ],
